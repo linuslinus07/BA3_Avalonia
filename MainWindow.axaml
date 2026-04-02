@@ -1,0 +1,205 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="BA3.Avalonia.MainWindow"
+        Title="BA3 Code"
+        Width="1485" Height="902"
+        MinWidth="1485" MinHeight="902"
+        MaxWidth="1485" MaxHeight="902"
+        UseLayoutRounding="True"
+        Icon="avares://BA3.Avalonia/Assets/bruhin.ico">
+    <Viewbox HorizontalAlignment="Center" Height="887" VerticalAlignment="Center" Width="1485" Stretch="Fill">
+        <Canvas HorizontalAlignment="Center" Height="553" VerticalAlignment="Center" Width="939">
+            <Grid Width="939" HorizontalAlignment="Center" Height="553" VerticalAlignment="Top">
+                <Border HorizontalAlignment="Left" Height="104" Margin="35,239,0,0" VerticalAlignment="Top" Width="733" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Bohrparameter" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="82" VerticalAlignment="Center" Width="723">
+                            <ComboBox x:Name="_lab" HorizontalAlignment="Left" Height="42" Margin="10,30,0,0" VerticalAlignment="Top" Width="120" Cursor="Hand" IsEditable="True" FontSize="30" SelectedIndex="1">
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="5"/>
+                                <ComboBoxItem Content="6"/>
+                                <ComboBoxItem Content="8"/>
+                                <ComboBoxItem Content="10"/>
+                            </ComboBox>
+                            <ComboBox x:Name="_deg" HorizontalAlignment="Left" Height="42" Margin="242,30,0,0" VerticalAlignment="Top" Width="130" IsEditable="True" Cursor="Hand" SelectedIndex="0" FontSize="30">
+                                <ComboBoxItem Content="0"/>
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="3"/>
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="5"/>
+                                <ComboBoxItem Content="6"/>
+                            </ComboBox>
+
+                            <Slider x:Name="_spinRPM" Minimum="0" Maximum="60000" TickFrequency="500" HorizontalAlignment="Left" Margin="435,36,0,10" Width="174" BorderBrush="Black" FontFamily="Bahnschrift SemiBold" FontSize="14" Cursor="Hand" TickPlacement="TopLeft" IsSnapToTickEnabled="True" Value="32400"/>
+                            <TextBlock HorizontalAlignment="Left" Height="22" Margin="672,38,0,0" TextWrapping="Wrap" Text="rpm" VerticalAlignment="Top" Width="38" FontFamily="Bahnschrift SemiBold" FontSize="16" Foreground="#FFA7A7A7"/>
+                            <TextBlock HorizontalAlignment="Left" Height="25" Margin="426,5,0,0" TextWrapping="Wrap" Text="Spindeldrehzahl (Autom.)" VerticalAlignment="Top" Width="187" FontFamily="Bahnschrift SemiBold" FontSize="16" Foreground="#FFA7A7A7"/>
+                            <TextBlock HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" FontFamily="Bahnschrift SemiBold" FontSize="16" Margin="10,5,0,0" Text="Lochabstand x"/>
+                            <TextBlock HorizontalAlignment="Left" Height="25" Margin="242,5,0,0" TextWrapping="Wrap" Text="Lochabstand Radial" VerticalAlignment="Top" Width="150" FontFamily="Bahnschrift SemiBold" FontSize="16"/>
+                            <TextBlock HorizontalAlignment="Left" Height="21" Margin="135,51,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="62" FontSize="16" FontFamily="Bahnschrift SemiBold"/>
+                            <TextBlock HorizontalAlignment="Left" Height="21" Margin="377,51,0,0" TextWrapping="Wrap" Text="[Grad]" VerticalAlignment="Top" Width="52" FontFamily="Bahnschrift SemiBold" FontSize="16"/>
+                            <TextBlock x:Name="SliderValue" HorizontalAlignment="Left" Height="20" Margin="622,39,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="45" Text="{Binding ElementName=_spinRPM, Path=Value, StringFormat={}{0:F0}}" FlowDirection="RightToLeft" Foreground="#FFA7A7A7"/>
+                            <CheckBox x:Name="_custom" Content="überschreiben" HorizontalAlignment="Left" Height="16" Margin="613,7,0,0" VerticalAlignment="Top" Width="104" FontSize="12" BorderThickness="1,1,1,1" IsChecked="False" Cursor="Hand" Padding="4,1,0,0" BorderBrush="#FFA7A7A7" Background="White" Foreground="#FFA7A7A7"/>
+                            <CheckBox x:Name="_versetzt" Content="Versetzte&#x0a;Reihen" HorizontalAlignment="Left" Margin="135,8,0,46" Width="93" FontSize="11"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Button HorizontalAlignment="Left" Height="164" Margin="670,360,0,0" VerticalAlignment="Top" Width="234" Background="#FF08FF00" FontFamily="Arial Black" FontSize="36" Cursor="Hand" Click="Calculate">
+                    <TextBlock Height="84" TextWrapping="Wrap" Text="Code Generieren" Width="224" Cursor="Hand" UseLayoutRounding="False" TextAlignment="Center" IsHitTestVisible="False"/>
+                </Button>
+
+                <Border HorizontalAlignment="Left" Height="70" Margin="35,36,0,0" VerticalAlignment="Top" Width="208" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Innendurchmesser Form" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="47" VerticalAlignment="Top" Width="198">
+                            <TextBox x:Name="_diaInt" HorizontalAlignment="Left" Height="25" Margin="40,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="101" Cursor="IBeam" FlowDirection="RightToLeft" Text="0" FontSize="22"/>
+                            <TextBlock HorizontalAlignment="Left" Height="21" Margin="146,16,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="42" Text="[mm]"/>
+                            <Image HorizontalAlignment="Left" Height="26" Margin="10,0,0,0" VerticalAlignment="Center" Width="25" Source="avares://BA3.Avalonia/Assets/diam.png"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="70" Margin="258,36,0,0" VerticalAlignment="Top" Width="224" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Formenhöhe h=" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="49" VerticalAlignment="Top" Width="214">
+                            <TextBox x:Name="_height" HorizontalAlignment="Left" Height="28" Margin="10,0,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="129" Cursor="IBeam" FlowDirection="RightToLeft" FontSize="24"/>
+                            <TextBlock HorizontalAlignment="Left" Height="20" Margin="144,19,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="41"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="70" Margin="507,36,0,0" VerticalAlignment="Top" Width="245" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Material t=" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="47" VerticalAlignment="Top" Width="235">
+                            <ComboBox x:Name="_mat" HorizontalAlignment="Left" Height="27" Margin="10,0,0,0" VerticalAlignment="Center" Width="100" IsEditable="True" Cursor="Hand" SelectedIndex="1" FontSize="20">
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="5"/>
+                                <ComboBoxItem Content="6"/>
+                                <ComboBoxItem Content="8"/>
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="12"/>
+                            </ComboBox>
+                            <TextBlock HorizontalAlignment="Left" Height="19" Margin="118,18,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="50"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="96" Margin="35,126,0,0" VerticalAlignment="Top" Width="447" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Abstände" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="437">
+                            <TextBox x:Name="_xErste" HorizontalAlignment="Left" Height="32" Margin="19,30,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="138" Cursor="IBeam" FlowDirection="RightToLeft" FontSize="28"/>
+                            <TextBox x:Name="_rabo" HorizontalAlignment="Left" Height="32" Margin="229,30,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Cursor="IBeam" FlowDirection="RightToLeft" Text="0" FontSize="28"/>
+                            <TextBlock HorizontalAlignment="Left" Height="16" Margin="19,11,0,0" TextWrapping="Wrap" Text="Abstand unten" VerticalAlignment="Top" Width="119"/>
+                            <TextBlock HorizontalAlignment="Left" Height="21" Margin="229,10,0,0" TextWrapping="Wrap" Text="Abstand oben" VerticalAlignment="Top" Width="100"/>
+                            <TextBlock HorizontalAlignment="Left" Height="26" Margin="162,43,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="37"/>
+                            <TextBlock HorizontalAlignment="Left" Height="19" Margin="367,43,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="38"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="96" Margin="507,126,0,0" VerticalAlignment="Top" Width="212" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Bohrdurchmesser" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Width="235" Height="72">
+                            <RadioButton x:Name="OptionA" Content="0.8 mm" HorizontalAlignment="Left" Height="16" Margin="15,5,0,0" VerticalAlignment="Top" Width="108" BorderBrush="Black" FontFamily="Bahnschrift SemiBold" Cursor="Hand"/>
+                            <RadioButton x:Name="OptionB" Content="1.0 mm" HorizontalAlignment="Left" Height="16" Margin="15,0,0,0" VerticalAlignment="Center" Width="109" BorderBrush="Black" Cursor="Hand"/>
+                            <RadioButton x:Name="OptionC" Content="1.3 mm" HorizontalAlignment="Left" Height="16" Margin="15,50,0,0" VerticalAlignment="Top" Width="107" BorderBrush="Black" Cursor="Hand"/>
+                            <RadioButton x:Name="OptionF" Content="3.0 mm" HorizontalAlignment="Left" Height="16" Margin="110,50,0,0" VerticalAlignment="Top" Width="107" BorderBrush="Black" Cursor="Hand"/>
+                            <RadioButton x:Name="OptionE" Content="2.0 mm" HorizontalAlignment="Left" Height="16" Margin="110,0,0,0" VerticalAlignment="Center" Width="106" BorderBrush="Black" Cursor="Hand"/>
+                            <RadioButton x:Name="OptionD" Content="1.5 mm" HorizontalAlignment="Left" Height="16" Margin="110,5,0,0" VerticalAlignment="Top" Width="107" BorderBrush="Black" Cursor="Hand"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="96" Margin="35,348,0,0" VerticalAlignment="Top" Width="331" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Mehrere Formen" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="74" VerticalAlignment="Top" Width="321">
+                            <ComboBox x:Name="_anz" HorizontalAlignment="Left" Height="30" Margin="10,34,0,0" VerticalAlignment="Top" Width="81" IsEditable="True" Foreground="Black" Cursor="Hand" SelectedIndex="0" FontSize="22">
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="2"/>
+                            </ComboBox>
+                            <TextBox x:Name="_xAbst" TextWrapping="Wrap" Text="0" Margin="127,34,54,10" Cursor="IBeam" FlowDirection="RightToLeft" FontSize="26"/>
+                            <TextBlock HorizontalAlignment="Left" Height="27" Margin="272,47,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="39"/>
+                            <TextBlock HorizontalAlignment="Left" Height="19" Margin="10,10,0,0" TextWrapping="Wrap" Text="Anz. Formen" VerticalAlignment="Top" Width="110"/>
+                            <TextBlock HorizontalAlignment="Left" Height="19" Margin="127,10,0,0" TextWrapping="Wrap" Text="Abstand zw. Formen" VerticalAlignment="Top" Width="166"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="75" Margin="35,449,0,0" VerticalAlignment="Top" Width="331" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Höhen/Tiefen" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="56" VerticalAlignment="Center" Width="321">
+                            <TextBlock HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" VerticalAlignment="Top" Width="167" Margin="10,11,0,0" FontSize="10" Text="Sicherheitshöhe [mm]"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17" Margin="182,12,0,0" TextWrapping="Wrap" Text="Durchbruchtiefe [mm]" VerticalAlignment="Top" Width="110" FontSize="10"/>
+                            <TextBox x:Name="_secur" HorizontalAlignment="Left" Height="21" Margin="10,25,0,0" TextWrapping="Wrap" Text="8" VerticalAlignment="Top" Width="130" Cursor="IBeam" FlowDirection="RightToLeft"/>
+                            <TextBox x:Name="_durch" HorizontalAlignment="Left" Height="21" Margin="182,25,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="120" Cursor="IBeam" FlowDirection="RightToLeft"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="124" Margin="394,348,0,0" VerticalAlignment="Top" Width="253" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Nullpunkt-Verschiebung in X" FontFamily="Bahnschrift SemiBold" FontSize="16" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="99" VerticalAlignment="Center" Width="243">
+                            <TextBox x:Name="_xVersch" HorizontalAlignment="Left" Height="41" Margin="10,10,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="164" Background="#FF00FF04" Foreground="White" TextAlignment="Right" FontSize="36" Cursor="IBeam"/>
+                            <TextBlock HorizontalAlignment="Left" Height="17" Margin="179,32,0,0" TextWrapping="Wrap" Text="[mm]" VerticalAlignment="Top" Width="39"/>
+                            <TextBlock HorizontalAlignment="Center" Height="46" Margin="0,56,0,0" TextWrapping="Wrap" Text="x0 ist mit einer Standartaufnahme von 23.4 mm da, wo die Form beginnt. Verschiebung in +x Form nach oben (dickere Aufnahme), Verschiebung in -x (dünnere Aufnahme)." VerticalAlignment="Top" Width="223" FontSize="9"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="104" Margin="787,239,0,0" VerticalAlignment="Top" Width="117" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Werte Speichern" FontFamily="Bahnschrift SemiBold" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Margin="0,0,0,1" Width="107">
+                            <Button x:Name="Clear" Content="Clear" HorizontalAlignment="Center" Height="31" Margin="0,41,0,0" VerticalAlignment="Top" Width="69" Background="#FFCC0000" FontSize="20" Cursor="Hand" Click="ClearInputs"/>
+                            <CheckBox x:Name="_speichern" Content="Werte&#x0a;Beibehalten" HorizontalAlignment="Center" Height="26" Margin="0,10,0,0" VerticalAlignment="Top" Width="87" Background="White" IsChecked="False" Cursor="Hand"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Grid Height="49" Canvas.Left="401" Canvas.Top="-15" Width="137" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-13,0,0">
+                    <TextBlock x:Name="_time" Height="20" TextWrapping="Wrap" Width="103" FontFamily="Arial Black" Text="00:00:00" VerticalAlignment="Top" Padding="22,0,0,0" Margin="18,29,16,0"/>
+                    <Rectangle HorizontalAlignment="Center" Height="25" Margin="0,24,0,0" Stroke="Black" VerticalAlignment="Top" Width="110" RadiusY="6" RadiusX="6" StrokeThickness="2"/>
+                </Grid>
+
+                <Image HorizontalAlignment="Left" Height="100" Margin="813,25,0,0" VerticalAlignment="Top" Width="100" Source="avares://BA3.Avalonia/Assets/logg.png"/>
+
+                <Border HorizontalAlignment="Left" Height="47" Margin="394,477,0,0" VerticalAlignment="Top" Width="253" BorderBrush="Black" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Speicherort" />
+                        <Grid Grid.Row="1" Height="36" VerticalAlignment="Top" Margin="-4,0,-2,0">
+                            <TextBox x:Name="_pathInput" Height="20" Margin="10,4,31,12" TextWrapping="Wrap" BorderBrush="#FFD5DFE5" Foreground="#FFADADAD"/>
+                            <Button x:Name="_browse" Content="..." Click="browse" HorizontalAlignment="Left" Height="15" Margin="221,9,0,0" VerticalAlignment="Top" Width="16" Padding="1,-6,1,1" BorderBrush="#FFADADAD" Foreground="#FFADADAD"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border HorizontalAlignment="Left" Height="66" Margin="787,156,0,0" VerticalAlignment="Top" Width="117" BorderBrush="#FFBFBFBF" BorderThickness="1">
+                    <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
+                        <TextBlock Text="Kunde" Foreground="#FF9A9A9A" />
+                        <Grid Grid.Row="1" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="107">
+                            <TextBox x:Name="_firmaName" HorizontalAlignment="Center" Height="26" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="87" BorderBrush="#FFC1C1C1" Foreground="#FFB5B5B5"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Grid HorizontalAlignment="Left" Height="22" Margin="723,200,0,0" VerticalAlignment="Top" Width="45">
+                    <CheckBox x:Name="_farbe" Content="Blau" HorizontalAlignment="Center" Height="22" VerticalAlignment="Center" Width="44" IsChecked="False"/>
+                </Grid>
+
+                <TextBlock x:Name="_version" HorizontalAlignment="Left" Margin="10,530,0,0" TextWrapping="Wrap" Text="{Binding version}" VerticalAlignment="Top" Foreground="#FFADADAD" FontSize="10"/>
+            </Grid>
+        </Canvas>
+    </Viewbox>
+</Window>
