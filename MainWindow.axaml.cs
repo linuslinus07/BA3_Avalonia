@@ -10,6 +10,8 @@ using BA3.Avalonia.Settings;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 
+// 04.04.2026
+
 namespace BA3.Avalonia;
 
 public partial class MainWindow : Window
