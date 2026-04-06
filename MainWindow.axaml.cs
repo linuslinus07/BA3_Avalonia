@@ -28,12 +28,96 @@ public partial class MainWindow : Window
         DataContext = this;
 
         Opened += async (_, _) => await LoadSettingsAsync();
-        Closing += async (_, _) => await PersistPathAsync();
+        Closing += OnWindowClosing;
     }
 
+    private void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e)
+    {
+        e.Cancel = true;
+        
+        // Capture all UI values on the UI thread FIRST
+        var pathInput = _pathInput.Text;
+        System.Diagnostics.Debug.WriteLine($"OnWindowClosing - pathInput: '{pathInput}'");
+        var height = double.Parse(_height.Text ?? "0");
+        var mat = double.Parse(_mat.Text ?? "0");
+        var diaInt = double.Parse(_diaInt.Text ?? "0");
+        var xErste = double.Parse(_xErste.Text ?? "0");
+        var rabo = double.Parse(_rabo.Text ?? "0");
+        var lab = double.Parse(_lab.Text ?? "0");
+        var deg = double.Parse(_deg.Text ?? "0");
+        var xVersch = double.Parse(_xVersch.Text ?? "0");
+        var secur = double.Parse(_secur.Text ?? "0");
+        var durch = double.Parse(_durch.Text ?? "0");
+        var spinRpm = _spinRPM.Value;
+        var xAbst = double.Parse(_xAbst.Text ?? "0");
+        var custom = _custom.IsChecked == true;
+        var anz = double.Parse(_anz.Text ?? "0");
+        var farbe = _farbe.IsChecked == true;
+        var versetzt = _versetzt.IsChecked == true;
+        var kunde = _firmaName.Text ?? "";
+        var keepValues = _speichern.IsChecked == true;
+        
+        var selectedDrill = OptionA.IsChecked == true ? "0.8" :
+                        OptionB.IsChecked == true ? "1.0" :
+                        OptionC.IsChecked == true ? "1.3" :
+                        OptionD.IsChecked == true ? "1.5" :
+                        OptionE.IsChecked == true ? "2.0" :
+                        OptionF.IsChecked == true ? "3.0" :
+                        "None";
+        
+        var saveTask = Task.Run(async () =>
+        {
+            try
+            {
+                var s = await _settingsService.LoadAsync();
+                s.PathInput = pathInput;
+                
+                if (keepValues)
+                {
+                    s.Height = height;
+                    s.Mat = mat;
+                    s.DiaInt = diaInt;
+                    s.XErste = xErste;
+                    s.Rabo = rabo;
+                    s.Lab = lab;
+                    s.XVersch = xVersch;
+                    s.Secur = secur;
+                    s.Durch = durch;
+                    s.SpinRpm = spinRpm;
+                    s.Deg = deg;
+                    s.XAbst = xAbst;
+                    s.Custom = custom;
+                    s.Anz = anz;
+                    s.Farbe = farbe;
+                    s.Versetzt = versetzt;
+                    s.Kunde = kunde;
+                    s.DrillDia = selectedDrill;
+                    s.KeepValues = true;
+                }
+                await _settingsService.SaveAsync(s);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"ERROR SAVING: {ex}");
+            }
+        });
+        
+        saveTask.Wait(5000);
+        
+        Closing -= OnWindowClosing;
+        e.Cancel = false;
+    }
+    
     private async Task LoadSettingsAsync()
     {
         var s = await _settingsService.LoadAsync();
+        
+        await Task.Delay(500);  // ✅ Increase delay significantly
+
+        System.Diagnostics.Debug.WriteLine($"Full loaded settings: {System.Text.Json.JsonSerializer.Serialize(s)}");
+        System.Diagnostics.Debug.WriteLine($"Loaded PathInput raw: '{s.PathInput}'");
+        System.Diagnostics.Debug.WriteLine($"Loaded PathInput is null: {s.PathInput == null}");
+        System.Diagnostics.Debug.WriteLine($"Loaded PathInput length: {s.PathInput?.Length}");
 
         _pathInput.Text = s.PathInput ?? "";
 

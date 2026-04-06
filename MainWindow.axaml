@@ -17,7 +17,7 @@
                     <Grid RowDefinitions="Auto,*" Margin="8,4,8,8">
                         <TextBlock Text="Bohrparameter" FontFamily="Bahnschrift SemiBold" FontSize="16" />
                         <Grid Grid.Row="1" HorizontalAlignment="Left" Height="82" VerticalAlignment="Center" Width="723">
-                            <ComboBox x:Name="_lab" HorizontalAlignment="Left" Height="42" Margin="10,30,0,0" VerticalAlignment="Top" Width="120" Cursor="Hand" IsEditable="False" FontSize="30" SelectedIndex="1">
+                            <ComboBox x:Name="_lab" HorizontalAlignment="Left" Height="42" Margin="10,30,0,0" VerticalAlignment="Top" Width="120" Cursor="Hand" IsEditable="True" FontSize="30" SelectedIndex="1">
                                 <ComboBoxItem Content="2"/>
                                 <ComboBoxItem Content="4"/>
                                 <ComboBoxItem Content="5"/>
@@ -25,7 +25,7 @@
                                 <ComboBoxItem Content="8"/>
                                 <ComboBoxItem Content="10"/>
                             </ComboBox>
-                            <ComboBox x:Name="_deg" HorizontalAlignment="Left" Height="42" Margin="242,30,0,0" VerticalAlignment="Top" Width="130" IsEditable="False" Cursor="Hand" SelectedIndex="0" FontSize="30">
+                            <ComboBox x:Name="_deg" HorizontalAlignment="Left" Height="42" Margin="242,30,0,0" VerticalAlignment="Top" Width="130" IsEditable="True" Cursor="Hand" SelectedIndex="0" FontSize="30">
                                 <ComboBoxItem Content="0"/>
                                 <ComboBoxItem Content="1"/>
                                 <ComboBoxItem Content="2"/>
