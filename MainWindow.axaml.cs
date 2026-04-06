@@ -31,27 +31,33 @@ public partial class MainWindow : Window
         Closing += OnWindowClosing;
     }
 
-    private void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e)
+    private bool _isClosing;
+    private async void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e)
     {
+        if (_isClosing) return;
+
         e.Cancel = true;
-        
+        _isClosing = true;
+
         // Capture all UI values on the UI thread FIRST
-        var pathInput = _pathInput.Text;
+        var pathInput = _pathInput.Text ?? "";
         System.Diagnostics.Debug.WriteLine($"OnWindowClosing - pathInput: '{pathInput}'");
-        var height = double.Parse(_height.Text ?? "0");
-        var mat = double.Parse(_mat.Text ?? "0");
-        var diaInt = double.Parse(_diaInt.Text ?? "0");
-        var xErste = double.Parse(_xErste.Text ?? "0");
-        var rabo = double.Parse(_rabo.Text ?? "0");
-        var lab = double.Parse(_lab.Text ?? "0");
-        var deg = double.Parse(_deg.Text ?? "0");
-        var xVersch = double.Parse(_xVersch.Text ?? "0");
-        var secur = double.Parse(_secur.Text ?? "0");
-        var durch = double.Parse(_durch.Text ?? "0");
+        
+        // Use double.TryParse for safety
+        double.TryParse(_height.Text, out var height);
+        double.TryParse(_mat.Text, out var mat);
+        double.TryParse(_diaInt.Text, out var diaInt);
+        double.TryParse(_xErste.Text, out var xErste);
+        double.TryParse(_rabo.Text, out var rabo);
+        double.TryParse(_lab.Text, out var lab);
+        double.TryParse(_deg.Text, out var deg);
+        double.TryParse(_xVersch.Text, out var xVersch);
+        double.TryParse(_secur.Text, out var secur);
+        double.TryParse(_durch.Text, out var durch);
         var spinRpm = _spinRPM.Value;
-        var xAbst = double.Parse(_xAbst.Text ?? "0");
+        double.TryParse(_xAbst.Text, out var xAbst);
         var custom = _custom.IsChecked == true;
-        var anz = double.Parse(_anz.Text ?? "0");
+        double.TryParse(_anz.Text, out var anz);
         var farbe = _farbe.IsChecked == true;
         var versetzt = _versetzt.IsChecked == true;
         var kunde = _firmaName.Text ?? "";
@@ -65,47 +71,47 @@ public partial class MainWindow : Window
                         OptionF.IsChecked == true ? "3.0" :
                         "None";
         
-        var saveTask = Task.Run(async () =>
+        try
         {
-            try
+            var s = await _settingsService.LoadAsync();
+            s.PathInput = pathInput;
+            
+            if (keepValues)
             {
-                var s = await _settingsService.LoadAsync();
-                s.PathInput = pathInput;
-                
-                if (keepValues)
-                {
-                    s.Height = height;
-                    s.Mat = mat;
-                    s.DiaInt = diaInt;
-                    s.XErste = xErste;
-                    s.Rabo = rabo;
-                    s.Lab = lab;
-                    s.XVersch = xVersch;
-                    s.Secur = secur;
-                    s.Durch = durch;
-                    s.SpinRpm = spinRpm;
-                    s.Deg = deg;
-                    s.XAbst = xAbst;
-                    s.Custom = custom;
-                    s.Anz = anz;
-                    s.Farbe = farbe;
-                    s.Versetzt = versetzt;
-                    s.Kunde = kunde;
-                    s.DrillDia = selectedDrill;
-                    s.KeepValues = true;
-                }
-                await _settingsService.SaveAsync(s);
+                s.Height = height;
+                s.Mat = mat;
+                s.DiaInt = diaInt;
+                s.XErste = xErste;
+                s.Rabo = rabo;
+                s.Lab = lab;
+                s.XVersch = xVersch;
+                s.Secur = secur;
+                s.Durch = durch;
+                s.SpinRpm = spinRpm;
+                s.Deg = deg;
+                s.XAbst = xAbst;
+                s.Custom = custom;
+                s.Anz = anz;
+                s.Farbe = farbe;
+                s.Versetzt = versetzt;
+                s.Kunde = kunde;
+                s.DrillDia = selectedDrill;
+                s.KeepValues = true;
             }
-            catch (Exception ex)
+            else
             {
-                System.Diagnostics.Debug.WriteLine($"ERROR SAVING: {ex}");
+                s.KeepValues = false;
             }
-        });
-        
-        saveTask.Wait(5000);
-        
-        Closing -= OnWindowClosing;
-        e.Cancel = false;
+            await _settingsService.SaveAsync(s);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"ERROR SAVING: {ex}");
+        }
+        finally
+        {
+            Close();
+        }
     }
     
     private async Task LoadSettingsAsync()
@@ -1310,7 +1316,7 @@ public partial class MainWindow : Window
             });
             #region -- speichern --
 
-            var s = new AppSettings();
+            var s = await _settingsService.LoadAsync();
             s.PathInput = directory;
 
             if (IsChecked == true)

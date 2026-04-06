@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "jaGuGAMwPRQ=",
+  "dgSpecHash": "fPBKBVlzIp5MOcEzS0yzKfykXLKDgwEiUKwIFQAc7kDyX0PpVAm7Z67cgXrPGrM67RiShq++joYrK6mlNfEZ9Q==",
   "success": true,
   "projectFilePath": "/home/linus/RiderProjects/BA3_Avalonia/BA3.Avalonia.csproj",
   "expectedPackageFiles": [
@@ -34,7 +34,10 @@
     "/home/linus/.nuget/packages/skiasharp.nativeassets.win32/2.88.9/skiasharp.nativeassets.win32.2.88.9.nupkg.sha512",
     "/home/linus/.nuget/packages/system.io.pipelines/8.0.0/system.io.pipelines.8.0.0.nupkg.sha512",
     "/home/linus/.nuget/packages/tmds.dbus.protocol/0.21.2/tmds.dbus.protocol.0.21.2.nupkg.sha512",
-    "/home/linus/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512"
+    "/home/linus/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/8.0.25/microsoft.netcore.app.runtime.linux-x64.8.0.25.nupkg.sha512",
+    "/home/linus/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.25/microsoft.aspnetcore.app.ref.8.0.25.nupkg.sha512",
+    "/home/linus/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/8.0.25/microsoft.aspnetcore.app.runtime.linux-x64.8.0.25.nupkg.sha512",
+    "/home/linus/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.25/microsoft.netcore.app.host.linux-x64.8.0.25.nupkg.sha512"
   ],
   "logs": []
 }

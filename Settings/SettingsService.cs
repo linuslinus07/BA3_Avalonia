@@ -43,8 +43,12 @@ public sealed class SettingsService
         if (!string.IsNullOrWhiteSpace(dir))
             Directory.CreateDirectory(dir);
 
+        var tempPath = SettingsPath + ".tmp";
         var json = JsonSerializer.Serialize(settings, _jsonOptions);
-        await File.WriteAllTextAsync(SettingsPath, json).ConfigureAwait(false);
+        await File.WriteAllTextAsync(tempPath, json).ConfigureAwait(false);
+        if (File.Exists(SettingsPath))
+            File.Delete(SettingsPath);
+        File.Move(tempPath, SettingsPath);
     }
 }
 
