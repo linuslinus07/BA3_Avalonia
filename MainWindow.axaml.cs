@@ -25,10 +25,6 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        timer.Tick += (_, _) => _time.Text = DateTime.Now.ToString("HH:mm:ss");
-        timer.Start();
-
         DataContext = this;
 
         Opened += async (_, _) => await LoadSettingsAsync();
