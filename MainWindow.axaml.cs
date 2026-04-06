@@ -112,7 +112,7 @@ public partial class MainWindow : Window
     {
         var s = await _settingsService.LoadAsync();
         
-        await Task.Delay(500);  // ✅ Increase delay significantly
+        //await Task.Delay(500);  // ✅ Increase delay significantly
 
         System.Diagnostics.Debug.WriteLine($"Full loaded settings: {System.Text.Json.JsonSerializer.Serialize(s)}");
         System.Diagnostics.Debug.WriteLine($"Loaded PathInput raw: '{s.PathInput}'");
@@ -151,12 +151,12 @@ public partial class MainWindow : Window
         OptionF.IsChecked = s.DrillDia == "3.0";
     }
 
-    private async Task PersistPathAsync()
+    /*private async Task PersistPathAsync()
     {
         var s = await _settingsService.LoadAsync();
         s.PathInput = _pathInput.Text;
         await _settingsService.SaveAsync(s);
-    }
+    }*/
 
     private void ClearInputs(object? sender, RoutedEventArgs e)
     {
