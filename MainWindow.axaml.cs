@@ -10,7 +10,7 @@ using BA3.Avalonia.Settings;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 
-// 04.04.2026
+// letzte änderung 04.04.2026 (exkl. kommentare)
 
 namespace BA3.Avalonia;
 
@@ -19,7 +19,7 @@ public partial class MainWindow : Window
     private readonly SettingsService _settingsService = new(appName: "BA3Code");
     private string? _folderpath;
 
-    public string version { get; set; } = "v010426";
+    public string version { get; set; } = "v010426"; //die version die in der app angezeigt wird (muss manuell geändert werden)
 
     public MainWindow()
     {
@@ -31,20 +31,20 @@ public partial class MainWindow : Window
         Closing += OnWindowClosing;
     }
 
-    private bool _isClosing;
-    private async void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e)
+    private bool _isClosing; 
+    private async void OnWindowClosing(object? sender, System.ComponentModel.CancelEventArgs e) //alles was passieren soll wen die app geschlossen wird..
     {
-        if (_isClosing) return;
+        if (_isClosing) return; // wenn der BOOL "_isClosing" true ist, dann...
 
         e.Cancel = true;
-        _isClosing = true;
+        _isClosing = true; 
 
-        // Capture all UI values on the UI thread FIRST
-        var pathInput = _pathInput.Text ?? "";
+        // zuerst werden die eingegebenen werte zu variabeln. "var pathinput" erstellt eine variabel namens pathinput, diese bekommt dann den wert des textfeldes von der app...
+        var pathInput = _pathInput.Text ?? ""; // das ?? "" ist eine sicherung. falls ".text" null ist, ist pathinput = "" (leerer string)
         System.Diagnostics.Debug.WriteLine($"OnWindowClosing - pathInput: '{pathInput}'");
         
-        // Use double.TryParse for safety
-        double.TryParse(_height.Text, out var height);
+        // benutze double.TryParse und nicht double.Parse zu sicherheit
+        double.TryParse(_height.Text, out var height); // ist wie "var height = _height.Text;" aber der text wird in eine zahl (double) umgewandelt
         double.TryParse(_mat.Text, out var mat);
         double.TryParse(_diaInt.Text, out var diaInt);
         double.TryParse(_xErste.Text, out var xErste);
@@ -54,31 +54,31 @@ public partial class MainWindow : Window
         double.TryParse(_xVersch.Text, out var xVersch);
         double.TryParse(_secur.Text, out var secur);
         double.TryParse(_durch.Text, out var durch);
-        var spinRpm = _spinRPM.Value;
+        var spinRpm = _spinRPM.Value;  // .value weils ein slider oder schiebregler und nicht ein textfeld ist... 
         double.TryParse(_xAbst.Text, out var xAbst);
-        var custom = _custom.IsChecked == true;
+        var custom = _custom.IsChecked == true; // die checkbox hat den typ "bool?", muss umgewandelt werden in den typ "bool". desshalb "==true"
         double.TryParse(_anz.Text, out var anz);
         var farbe = _farbe.IsChecked == true;
         var versetzt = _versetzt.IsChecked == true;
-        var kunde = _firmaName.Text ?? "";
+        var kunde = _firmaName.Text ?? ""; // falls .text null ist -> kunde = ""
         var keepValues = _speichern.IsChecked == true;
         
-        var selectedDrill = OptionA.IsChecked == true ? "0.8" :
-                        OptionB.IsChecked == true ? "1.0" :
+        var selectedDrill = OptionA.IsChecked == true ? "0.8" : // bedingung ? wertWennTrue : wertWennFalse
+                        OptionB.IsChecked == true ? "1.0" :     // also wenn eine der radiobuttons true ist dann wird der wert nach dem "?" genommen..
                         OptionC.IsChecked == true ? "1.3" :
                         OptionD.IsChecked == true ? "1.5" :
                         OptionE.IsChecked == true ? "2.0" :
                         OptionF.IsChecked == true ? "3.0" :
-                        "None";
+                        "None"; // falls keines ausgewählt ist, wird "none" genommen
         
         try
         {
             var s = await _settingsService.LoadAsync();
             s.PathInput = pathInput;
             
-            if (keepValues)
+            if (keepValues) // wenn das speichern der eingaben aktiviert ist, dann..
             {
-                s.Height = height;
+                s.Height = height;    // die height variable wird in s.height gespeichert
                 s.Mat = mat;
                 s.DiaInt = diaInt;
                 s.XErste = xErste;
@@ -98,7 +98,7 @@ public partial class MainWindow : Window
                 s.DrillDia = selectedDrill;
                 s.KeepValues = true;
             }
-            else
+            else // wenn nicht, dann nicht..
             {
                 s.KeepValues = false;
             }
@@ -108,29 +108,30 @@ public partial class MainWindow : Window
         {
             System.Diagnostics.Debug.WriteLine($"ERROR SAVING: {ex}");
         }
-        finally
+        finally // endlich fertig, also Close()
         {
             Close();
         }
     }
-    
-    private async Task LoadSettingsAsync()
+
+    // beim starten der app passiert was ziemlich ähnliches. gespeicherte oder default werte werden geladen..
+    private async Task LoadSettingsAsync() 
     {
         var s = await _settingsService.LoadAsync();
         
-        //await Task.Delay(500);  // ✅ Increase delay significantly
+        //await Task.Delay(500);  // Increase delay significantly
 
         System.Diagnostics.Debug.WriteLine($"Full loaded settings: {System.Text.Json.JsonSerializer.Serialize(s)}");
         System.Diagnostics.Debug.WriteLine($"Loaded PathInput raw: '{s.PathInput}'");
         System.Diagnostics.Debug.WriteLine($"Loaded PathInput is null: {s.PathInput == null}");
         System.Diagnostics.Debug.WriteLine($"Loaded PathInput length: {s.PathInput?.Length}");
 
-        _pathInput.Text = s.PathInput ?? "";
+        _pathInput.Text = s.PathInput ?? ""; //das textfeld wird mit dem gesp. text ausgefüllt falls einer gesp. wurde.... 
 
         if (!s.KeepValues)
             return;
 
-        _height.Text = s.Height.ToString();
+        _height.Text = s.Height.ToString(); // wohl logisch...
         _mat.Text = s.Mat.ToString();
         _diaInt.Text = s.DiaInt.ToString();
         _xErste.Text = s.XErste.ToString();
@@ -164,9 +165,9 @@ public partial class MainWindow : Window
         await _settingsService.SaveAsync(s);
     }*/
 
-    private void ClearInputs(object? sender, RoutedEventArgs e)
+    private void ClearInputs(object? sender, RoutedEventArgs e) // wenn button "clear" gedrückt wird -> default werte einsetzen
     {
-        _diaInt.Text = "0";
+        _diaInt.Text = "0"; // default werte. können zu irgendwas geändert werden....
         _height.Text = "0";
         _lab.Text = "4";
         _xErste.Text = "0";
@@ -193,12 +194,12 @@ public partial class MainWindow : Window
         OptionF.IsChecked = false;
     }
 
-    private async void browse(object? sender, RoutedEventArgs e)
+    private async void browse(object? sender, RoutedEventArgs e) // den speicherort auswählen..
     {
-        var options = new FolderPickerOpenOptions
+        var options = new FolderPickerOpenOptions // dateien fenster zum auswählen des speicherorts offnet sich
         {
             Title = "Ordner auswählen",
-            AllowMultiple = false
+            AllowMultiple = false // nur ein fenster darf existieren
         };
 
         var folders = await StorageProvider.OpenFolderPickerAsync(options);
@@ -232,6 +233,7 @@ public partial class MainWindow : Window
         return result == ButtonResult.Ok;
     }
 
+    // wenn der calc button gedrückt wird (für das erstellen der datei)
     public async void Calculate(object? sender, RoutedEventArgs e)
     {
         #region -- Calculate --
